@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Belajar Piano Dasar</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --text:#e9ecff;
+      --muted:#aab1d6;
+      --accent:#7c5cff;
+      --accent2:#33d6a6;
+      --danger:#ff4d6d;
+      --line:rgba(255,255,255,.10);
+      --shadow: 0 12px 40px rgba(0,0,0,.35);
+      --radius: 18px;
+      --radius2: 14px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1000px 600px at 20% 10%, rgba(124,92,255,.25), transparent 60%),
+                  radial-gradient(900px 500px at 80% 20%, rgba(51,214,166,.18), transparent 55%),
+                  radial-gradient(900px 600px at 50% 90%, rgba(255,77,109,.12), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .app{
+      width:min(1100px, 100%);
+      display:grid;
+      gap:16px;
+      grid-template-columns: 320px 1fr;
+    }
+    @media (max-width: 900px){
+      .app{grid-template-columns: 1fr;}
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .sidebar{
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:14px;
+      background: linear-gradient(180deg, rgba(124,92,255,.18), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius: var(--radius2);
+    }
+    .logo{
+      width:42px;height:42px;border-radius:14px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), transparent 45%),
+                  linear-gradient(135deg, var(--accent), rgba(51,214,166,.7));
+      display:grid;place-items:center;
+      font-weight:900;
+    }
+    .brand h1{font-size:16px;margin:0}
+    .brand p{margin:2px 0 0;color:var(--muted);font-size:12px}
+
+    .btn{
+      border:none;
+      border-radius:14px;
+      padding:12px 14px;
+      cursor:pointer;
+      font-weight:800;
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      border:1px solid var(--line);
+      transition:.15s transform, .15s background;
+      text-align:left;
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.08);}
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(124,92,255,.95), rgba(51,214,166,.75));
+      border:none;
+    }
+    .btnRow{display:flex; gap:10px; flex-wrap:wrap;}
+    .btnRow .btn{flex:1; min-width:130px;}
+
+    .menu{display:none; gap:10px; flex-direction:column;}
+    .menu .btn{font-size:14px}
+    .menu .btn.active{
+      border-color: rgba(124,92,255,.65);
+      background: rgba(124,92,255,.12);
+    }
+
+    .hint{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.4;
+      padding:12px 14px;
+      border:1px dashed rgba(255,255,255,.16);
+      border-radius: 14px;
+      background: rgba(0,0,0,.15);
+    }
+
+    .main{padding:18px; min-height: 680px;}
+    .topbar{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:12px;
+      flex-wrap:wrap;
+    }
+    .title h2{margin:0;font-size:18px}
+    .title p{margin:6px 0 0;color:var(--muted);font-size:13px}
+
+    .pill{
+      padding:8px 12px;
+      border-radius:999px;
+      background: rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      color:var(--muted);
+      font-size:12px;
+      white-space:nowrap;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .panel{
+      background: rgba(0,0,0,.18);
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      padding:16px;
+      margin-top:12px;
+    }
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width: 900px){
+      .grid2{grid-template-columns: 1fr;}
+    }
+    .list{
+      margin:0;
+      padding-left:18px;
+      color:var(--text);
+      line-height:1.7;
+    }
+    .list li{margin-bottom:6px}
+    .muted{color:var(--muted)}
+    .kpi{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:stretch;
+    }
+    .kpi .mini{
+      flex:1; min-width:160px;
+      border-radius: 16px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      padding:12px;
+    }
+    .mini .big{font-size:20px; font-weight:900}
+    .mini .small{color:var(--muted); font-size:12px}
+
+    /* Language switch */
+    .langWrap{display:flex; gap:8px; align-items:center; margin-top:10px;}
+    .seg{
+      display:flex;
+      border:1px solid var(--line);
+      border-radius:999px;
+      overflow:hidden;
+      background: rgba(255,255,255,.05);
+    }
+    .seg button{
+      border:none;
+      padding:8px 12px;
+      cursor:pointer;
+      background: transparent;
+      color: var(--muted);
+      font-weight:900;
+      font-size:12px;
+    }
+    .seg button.active{
+      background: rgba(124,92,255,.20);
+      color: var(--text);
+    }
+
+    /* Staff */
+    .staffWrap{display:flex; justify-content:center; overflow:auto; padding:10px;}
+    .staff{
+      width:800px; height:240px;
+      background: rgba(255,255,255,.03);
+      border:1px solid var(--line);
+      border-radius:18px;
+      position:relative;
+      padding:20px;
+    }
+    .staffLine{position:absolute; left:20px; right:20px; height:2px; background: rgba(255,255,255,.12);}
+    .note{
+      position:absolute;
+      width:18px;height:12px;
+      border-radius:999px;
+      background: rgba(124,92,255,.9);
+      border:2px solid rgba(255,255,255,.25);
+      cursor:pointer;
+      transform: rotate(-15deg);
+      box-shadow: 0 10px 18px rgba(0,0,0,.25);
+    }
+    .note:hover{filter: brightness(1.1);}
+    .noteLabel{
+      position:absolute;
+      font-size:12px;
+      color:var(--muted);
+      left:20px; bottom:10px;
+    }
+
+    /* Piano */
+    .pianoWrap{overflow:auto; padding:12px}
+    .piano{
+      width:900px; height:200px;
+      position:relative;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      padding:14px;
+    }
+    .keys{position:absolute; left:14px; right:14px; top:14px; bottom:14px;}
+    .whiteKeys{display:flex;height:100%;gap:6px;}
+    .whiteKey{
+      flex:1;
+      background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.65));
+      border-radius:12px;
+      border:1px solid rgba(0,0,0,.15);
+      position:relative;
+      cursor:pointer;
+      user-select:none;
+    }
+    .whiteKey:active, .whiteKey.active{transform: translateY(1px); filter: brightness(.95);}
+    .whiteKey span{
+      position:absolute;
+      bottom:8px; left:8px;
+      font-size:12px; color: rgba(0,0,0,.6);
+      font-weight:800;
+    }
+    .blackKey{
+      position:absolute;
+      top:14px;
+      width: calc((100% - 6px*6)/7 * 0.62);
+      height: 64%;
+      background: linear-gradient(180deg, rgba(0,0,0,.9), rgba(0,0,0,.65));
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.08);
+      cursor:pointer;
+      user-select:none;
+    }
+    .blackKey:active, .blackKey.active{transform: translateY(1px); filter: brightness(1.1);}
+    .blackKey span{
+      position:absolute;
+      bottom:8px; left:8px;
+      font-size:11px; color: rgba(255,255,255,.7);
+      font-weight:800;
+    }
+
+    /* Metronome + inputs */
+    .slider{width:100%}
+    .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
+    input[type="number"]{
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.25);
+      color: var(--text);
+      outline:none;
+      width:140px;
+    }
+    .smallBtn{
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      cursor:pointer;
+      font-weight:900;
+    }
+    .smallBtn.primary{
+      background: linear-gradient(135deg, rgba(124,92,255,.95), rgba(51,214,166,.75));
+      border:none;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      font-size:12px;
+      color: var(--muted);
+      white-space:nowrap;
+    }
+
+    /* Quiz */
+    .qa{display:grid; gap:10px;}
+    .choice{
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      cursor:pointer;
+      font-weight:900;
+    }
+    .choice:hover{background: rgba(255,255,255,.07);}
+    .choice.good{border-color: rgba(51,214,166,.55); background: rgba(51,214,166,.12);}
+    .choice.bad{border-color: rgba(255,77,109,.55); background: rgba(255,77,109,.12);}
+    .hr{height:1px;background:var(--line); margin:12px 0;}
+
+    /* Progress */
+    .progressBar{
+      height:10px; border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.25);
+      overflow:hidden;
+    }
+    .progressBar > div{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, rgba(124,92,255,.95), rgba(51,214,166,.85));
+    }
+
+    a.link{
+      color: #c6c0ff;
+      text-decoration: none;
+      font-weight:900;
+      border-bottom: 1px dashed rgba(198,192,255,.5);
+    }
+    .callout{
+      border:1px solid rgba(124,92,255,.35);
+      background: rgba(124,92,255,.10);
+      border-radius: 16px;
+      padding:12px 14px;
+      color: var(--text);
+      line-height:1.7;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <div class="card sidebar">
+      <div class="brand">
+        <div class="logo">♫</div>
+        <div>
+          <h1 id="appNameSide">Belajar Piano Dasar</h1>
+          <p id="appTagSide">Belajar piano untuk pemula</p>
+        </div>
+      </div>
+
+      <div id="homeActions" class="btnRow">
+        <button class="btn primary" id="btnStart">Mulai</button>
+      </div>
+
+      <div id="menu" class="menu">
+        <button class="btn" data-page="about" id="m_about">Tentang Aplikasi</button>
+        <button class="btn" data-page="theory" id="m_theory">1. Teori Musik Dasar</button>
+        <button class="btn" data-page="staff" id="m_staff">2. Note Balok Interaktif</button>
+        <button class="btn" data-page="piano" id="m_piano">3. Simulasi Piano Virtual</button>
+        <button class="btn" data-page="metro" id="m_metro">4. Metronome</button>
+        <button class="btn" data-page="quiz" id="m_quiz">5. Latihan & Kuis</button>
+        <button class="btn" data-page="progress" id="m_progress">6. Progress Belajar</button>
+
+        <div class="btnRow" style="margin-top:8px;">
+          <button class="btn" id="btnBackHome">Kembali ke Depan</button>
+          <button class="btn" id="btnReset">Reset Data</button>
+        </div>
+
+        <div class="langWrap">
+          <div class="badge" id="langLabel">Bahasa</div>
+          <div class="seg">
+            <button id="btnLangID">ID</button>
+            <button id="btnLangEN">EN</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="hint">
+        <b>Tips cepat:</b>
+        <ul style="margin:8px 0 0; padding-left:18px;">
+          <li>Piano virtual: <b>A S D F G H J</b> (putih) & <b>W E T Y U</b> (hitam).</li>
+          <li>Progress tersimpan otomatis (offline).</li>
+          <li>Keluar aplikasi: tombol back HP.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card main">
+      <div class="topbar">
+        <div class="title">
+          <h2 id="pageTitle">Halaman Depan</h2>
+          <p id="pageDesc" class="muted">Klik <b>Mulai</b> untuk membuka menu belajar.</p>
+        </div>
+        <div class="pill">Status: <b id="statusText">Siap</b></div>
+      </div>
+
+      <div id="content"></div>
+    </div>
+  </div>
+
+<script>
+/* =========================
+   APP CONFIG (DATA KAMU)
+========================= */
+const APP = {
+  name: "Belajar Piano Dasar",
+  maker: "Muhammad Faristanto Salman",
+  instagram: "https://www.instagram.com/just.farissss/",
+  waBusiness: "89657737111",
+  version: "v1.0",
+  year: new Date().getFullYear()
+};
+
+/* =========================
+   I18N (ID/EN)
+========================= */
+const I18N_KEY = "bp_lang_full_v3";
+let lang = localStorage.getItem(I18N_KEY) || "id";
+
+const T = {
+  id: {
+    start: "Mulai",
+    backHome: "Kembali ke Depan",
+    reset: "Reset Data",
+    statusReady: "Siap",
+    statusSaved: "Tersimpan",
+    statusPlayed: "Bunyi dimainkan",
+    statusRunning: "Metronome berjalan",
+    statusStopped: "Metronome berhenti",
+    langLabel: "Bahasa",
+    tag: "Belajar piano untuk pemula",
+    homeTitle: "Halaman Depan",
+    homeDesc: "Klik Mulai untuk membuka menu belajar.",
+
+    menu_about: "Tentang Aplikasi",
+    menu_theory: "1. Teori Musik Dasar",
+    menu_staff: "2. Note Balok Interaktif",
+    menu_piano: "3. Simulasi Piano Virtual",
+    menu_metro: "4. Metronome",
+    menu_quiz: "5. Latihan & Kuis",
+    menu_progress: "6. Progress Belajar",
+
+    aboutTitle: "Tentang Aplikasi",
+    aboutDesc: "Info aplikasi, pembuat, fitur, dan kontak.",
+    roleVal: "Developer & Music Learning Content Creator",
+    purposeText: "Membantu pemula belajar piano secara mandiri, fleksibel, dan mudah diakses melalui perangkat mobile.",
+    contacts: "Kontak",
+    features: "Fitur Utama",
+
+    staffBackToMenu: "⬅ Kembali ke Menu",
+    staffBackHint: "Langsung balik ke menu awal",
+
+    markDone: "Tandai selesai",
+    marked: "Ditandai selesai ✅",
+  },
+  en: {
+    start: "Start",
+    backHome: "Back to Home",
+    reset: "Reset Data",
+    statusReady: "Ready",
+    statusSaved: "Saved",
+    statusPlayed: "Sound played",
+    statusRunning: "Metronome running",
+    statusStopped: "Metronome stopped",
+    langLabel: "Language",
+    tag: "Beginner piano learning",
+    homeTitle: "Home",
+    homeDesc: "Tap Start to open the learning menu.",
+
+    menu_about: "About App",
+    menu_theory: "1. Basic Music Theory",
+    menu_staff: "2. Interactive Staff Notes",
+    menu_piano: "3. Virtual Piano Simulator",
+    menu_metro: "4. Metronome",
+    menu_quiz: "5. Exercises & Quiz",
+    menu_progress: "6. Learning Progress",
+
+    aboutTitle: "About This App",
+    aboutDesc: "App info, creator, features, and contacts.",
+    roleVal: "Developer & Music Education Content Creator",
+    purposeText: "Help beginners learn piano independently, flexibly, and easily through mobile devices.",
+    contacts: "Contacts",
+    features: "Key Features",
+
+    staffBackToMenu: "⬅ Back to Menu",
+    staffBackHint: "Return to the main menu",
+
+    markDone: "Mark as done",
+    marked: "Marked done ✅",
+  }
+};
+function t(key){ return (T[lang] && T[lang][key]) ? T[lang][key] : key; }
+
+/* =========================
+   PROGRESS STORAGE
+========================= */
+const STORAGE_KEY = "belajar_piano_progress_FULL_v3";
+const defaultProgress = {
+  opened: { about:false, theory:false, staff:false, piano:false, metro:false, quiz:false, progress:false },
+  checklist: { theory_read:false, staff_click5:false, piano_play10:false, metro_use:false, quiz_score3:false },
+  counters: { staffClicks: 0, pianoPlays: 0, quizBest: 0 },
+  lastPage: "about"
+};
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return structuredClone(defaultProgress);
+    const p = JSON.parse(raw);
+    return {
+      ...structuredClone(defaultProgress),
+      ...p,
+      opened: { ...structuredClone(defaultProgress.opened), ...(p.opened||{}) },
+      checklist: { ...structuredClone(defaultProgress.checklist), ...(p.checklist||{}) },
+      counters: { ...structuredClone(defaultProgress.counters), ...(p.counters||{}) }
+    };
+  }catch(e){ return structuredClone(defaultProgress); }
+}
+function saveProgress(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(progress)); }
+let progress = loadProgress();
+
+/* =========================
+   DOM
+========================= */
+const elContent = document.getElementById("content");
+const elPageTitle = document.getElementById("pageTitle");
+const elPageDesc  = document.getElementById("pageDesc");
+const elMenu = document.getElementById("menu");
+const elHomeActions = document.getElementById("homeActions");
+const elStatusText = document.getElementById("statusText");
+
+const btnStart = document.getElementById("btnStart");
+const btnBackHome = document.getElementById("btnBackHome");
+const btnReset = document.getElementById("btnReset");
+
+const m_about = document.getElementById("m_about");
+const m_theory = document.getElementById("m_theory");
+const m_staff = document.getElementById("m_staff");
+const m_piano = document.getElementById("m_piano");
+const m_metro = document.getElementById("m_metro");
+const m_quiz = document.getElementById("m_quiz");
+const m_progress = document.getElementById("m_progress");
+
+const btnLangID = document.getElementById("btnLangID");
+const btnLangEN = document.getElementById("btnLangEN");
+const langLabel = document.getElementById("langLabel");
+
+const appNameSide = document.getElementById("appNameSide");
+const appTagSide = document.getElementById("appTagSide");
+
+function setStatus(text){ elStatusText.textContent = text; }
+
+function setActiveMenu(page){
+  [...elMenu.querySelectorAll("button[data-page]")].forEach(b=>{
+    b.classList.toggle("active", b.dataset.page === page);
+  });
+}
+function showMenu(){
+  elMenu.style.display = "flex";
+  elHomeActions.style.display = "none";
+}
+function showHomeActions(){
+  elMenu.style.display = "none";
+  elHomeActions.style.display = "flex";
+  setActiveMenu(null);
+}
+function goMenuHome(){
+  showMenu();
+  setActiveMenu(null);
+  pages.menuHome();
+}
+function pctComplete(){
+  const items = Object.values(progress.checklist);
+  const done = items.filter(Boolean).length;
+  return Math.round((done / items.length) * 100);
+}
+function markOpened(page){
+  if(!progress.opened[page]){
+    progress.opened[page] = true;
+    saveProgress();
+  }
+}
+
+/* =========================
+   AUDIO (SAMPLE MP3) - Realistic Piano
+   Taruh file mp3 SEFOLDER dengan HTML ini, atau folder "audio/"
+========================= */
+const SAMPLE_DIR = "Source/"; // ubah ke "audio/" kalau kamu taro di folder audio
+
+// ✅ NATURAL + ✅ SHARP (batch 1 & 2 sudah masuk)
+const NOTE_SAMPLES = {
+  "C4":  `${SAMPLE_DIR}C4.mp3`,
+  "C#4": `${SAMPLE_DIR}Cs4.mp3`,
+  "D4":  `${SAMPLE_DIR}D4.mp3`,
+  "D#4": `${SAMPLE_DIR}Ds4.mp3`,
+  "E4":  `${SAMPLE_DIR}E4.mp3`,
+  "F4":  `${SAMPLE_DIR}F4.mp3`,
+  "F#4": `${SAMPLE_DIR}Fs4.mp3`,
+  "G4":  `${SAMPLE_DIR}G4.mp3`,
+  "G#4": `${SAMPLE_DIR}Gs4.mp3`,
+  "A4":  `${SAMPLE_DIR}A4.mp3`,
+  "A#4": `${SAMPLE_DIR}As4.mp3`,
+  "B4":  `${SAMPLE_DIR}B4.mp3`,
+  "C5":  `${SAMPLE_DIR}C5.mp3`,
+};
+
+/* Kalau AppGeyser/WebView bermasalah dengan karakter "#",
+   rename file jadi:
+   C#4.mp3 -> Cs4.mp3, D#4.mp3 -> Ds4.mp3, F#4.mp3 -> Fs4.mp3, dst
+   lalu ubah mapping di atas sesuai nama baru.
+*/
+
+const audioCache = new Map();
+function getAudioEl(note){
+  const src = NOTE_SAMPLES[note];
+  if(!src) return null;
+
+  if(!audioCache.has(note)){
+    const a = new Audio(src);
+    a.preload = "auto";
+    a.volume = 1.0;
+    audioCache.set(note, a);
+  }
+  return audioCache.get(note);
+}
+function preloadSamples(){
+  Object.keys(NOTE_SAMPLES).forEach(n=>{
+    const a = getAudioEl(n);
+    if(a) a.load();
+  });
+}
+function playSample(note){
+  const base = getAudioEl(note);
+  if(!base) return false;
+  try{
+    const a = base.cloneNode(true);
+    a.volume = 1.0;
+    a.currentTime = 0;
+    a.play().catch(()=>{});
+    return true;
+  }catch(e){
+    return false;
+  }
+}
+
+/* Metronome click fallback tone */
+let audioCtx = null;
+function getAudio(){
+  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+function playTone(freq, dur=0.06){
+  const ctx = getAudio();
+  const o = ctx.createOscillator();
+  const g = ctx.createGain();
+  o.type = "square";
+  o.frequency.value = freq;
+
+  const now = ctx.currentTime;
+  g.gain.setValueAtTime(0.0001, now);
+  g.gain.exponentialRampToValueAtTime(0.18, now + 0.01);
+  g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+
+  o.connect(g); g.connect(ctx.destination);
+  o.start(now); o.stop(now + dur + 0.02);
+}
+function playNoteName(note){
+  // sekarang semuanya bisa sample
+  const ok = playSample(note);
+  if(ok) return;
+  // kalau ada yang missing, tetap aman (tidak error)
+}
+
+const METRO = {
+  timer: null,
+  ticks: 0,
+  stop(){
+    if(this.timer){
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+  }
+};
+
+/* =========================
+   ROUTER
+========================= */
+function go(page){
+    METRO.stop();
+  setActiveMenu(page);
+  pages[page]?.();
+  setStatus(t("statusReady"));
+}
+
+/* =========================
+   PAGES
+========================= */
+const pages = {
+  home(){
+    elPageTitle.textContent = t("homeTitle");
+    elPageDesc.textContent = t("homeDesc");
+    elContent.innerHTML = `
+      <div class="panel">
+        <div class="kpi">
+          <div class="mini">
+            <div class="big">${pctComplete()}%</div>
+            <div class="small">${lang==="id" ? "Progress checklist" : "Checklist progress"}</div>
+          </div>
+          <div class="mini">
+            <div class="big">${progress.counters.pianoPlays}</div>
+            <div class="small">${lang==="id" ? "Nada dimainkan" : "Notes played"}</div>
+          </div>
+          <div class="mini">
+            <div class="big">${progress.counters.quizBest}</div>
+            <div class="small">${lang==="id" ? "Skor kuis terbaik" : "Best quiz score"}</div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:12px;">
+          <b>${APP.name}</b><br/>
+          <span class="muted">${
+            lang==="id"
+            ? "Belajar piano dari dasar sampai latihan, semua dalam satu aplikasi."
+            : "Learn piano basics to practice, all in one app."
+          }</span>
+        </div>
+      </div>
+    `;
+  },
+
+  menuHome(){
+    elPageTitle.textContent = (lang==="id") ? "Menu Belajar" : "Learning Menu";
+    elPageDesc.textContent = (lang==="id") ? "Pilih materi yang mau kamu buka." : "Choose what you want to learn.";
+    elContent.innerHTML = `
+      <div class="panel">
+        <div class="callout">
+          <b>${lang==="id" ? "Rute pemula yang efektif:" : "Effective beginner path:"}</b><br/>
+          ${lang==="id"
+            ? "1 (Teori) → 2 (Not Balok) → 4 (Metronome) → 3 (Piano) → 5 (Kuis) → 6 (Progress)"
+            : "1 (Theory) → 2 (Staff) → 4 (Metronome) → 3 (Piano) → 5 (Quiz) → 6 (Progress)"}
+        </div>
+        <div class="panel">
+          <div class="muted">${lang==="id" ? "Pembuat" : "Creator"}</div>
+          <div style="font-weight:900; margin-top:6px;">${APP.maker}</div>
+          <div class="muted" style="margin-top:10px;">${lang==="id" ? "Versi" : "Version"}</div>
+          <div style="font-weight:900; margin-top:6px;">${APP.version}</div>
+        </div>
+      </div>
+    `;
+  },
+
+  about(){
+    markOpened("about");
+    progress.lastPage = "about"; saveProgress();
+
+    elPageTitle.textContent = t("aboutTitle");
+    elPageDesc.textContent = t("aboutDesc");
+
+    const descID = `Belajar Piano Dasar adalah aplikasi edukasi musik untuk pemula. Aplikasi ini membantu memahami teori musik dasar, membaca not balok, berlatih piano virtual, menggunakan metronome, serta mengukur kemampuan melalui latihan dan kuis.`;
+    const descEN = `Belajar Piano Dasar is a beginner-friendly music learning application. It helps users learn basic music theory, read staff notation, practice with a virtual piano, use a metronome, and improve skills through exercises and quizzes.`;
+
+    elContent.innerHTML = `
+      <div class="panel">
+        <div class="grid2">
+          <div class="panel" style="margin:0;">
+            <div class="muted">${lang==="id" ? "Nama Aplikasi" : "App Name"}</div>
+            <div style="font-size:18px; font-weight:900; margin-top:6px;">${APP.name}</div>
+            <div class="muted" style="margin-top:10px;">${lang==="id" ? "Pembuat" : "Created by"}</div>
+            <div style="font-weight:900; margin-top:6px;">${APP.maker}</div>
+          </div>
+          <div class="panel" style="margin:0;">
+            <div class="muted">${lang==="id" ? "Peran" : "Role"}</div>
+            <div style="font-weight:900; margin-top:6px;">${t("roleVal")}</div>
+            <div class="muted" style="margin-top:10px;">${lang==="id" ? "Tahun" : "Year"}</div>
+            <div style="font-weight:900; margin-top:6px;">${APP.year}</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="muted">${lang==="id" ? "Deskripsi" : "Description"}</div>
+          <div style="margin-top:8px; line-height:1.8;">${lang==="id" ? descID : descEN}</div>
+        </div>
+
+        <div class="panel">
+          <div class="muted">${lang==="id" ? "Tujuan" : "Purpose"}</div>
+          <div style="margin-top:8px; line-height:1.8;">${t("purposeText")}</div>
+        </div>
+
+        <div class="panel">
+          <div class="muted">${t("features")}</div>
+          <ul class="list" style="margin-top:8px;">
+            <li>${lang==="id" ? "Teori Musik Dasar (khusus piano)" : "Basic Music Theory (piano-focused)"}</li>
+            <li>${lang==="id" ? "Note Balok Interaktif" : "Interactive Staff Notes"}</li>
+            <li>${lang==="id" ? "Piano Virtual + latihan" : "Virtual Piano + practice"}</li>
+            <li>Metronome</li>
+            <li>${lang==="id" ? "Latihan & Kuis" : "Exercises & Quiz"}</li>
+            <li>${lang==="id" ? "Progress Belajar" : "Learning Progress"}</li>
+          </ul>
+        </div>
+
+        <div class="panel">
+          <div class="muted">${t("contacts")}</div>
+          <div style="margin-top:10px; line-height:2;">
+            Instagram: <a class="link" href="${APP.instagram}" target="_blank" rel="noopener">${APP.instagram}</a><br/>
+            WhatsApp Business: <a class="link" href="https://wa.me/62${sanitizeWA(APP.waBusiness)}" target="_blank" rel="noopener">+62 ${formatWA(APP.waBusiness)}</a>
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  theory(){
+    markOpened("theory");
+    progress.lastPage = "theory"; saveProgress();
+
+    elPageTitle.textContent = (lang==="id") ? "1. Teori Musik Dasar (Piano)" : "1. Basic Music Theory (Piano)";
+    elPageDesc.textContent = (lang==="id")
+      ? "Materi lebih dalam: teknik dasar, ritme, notasi, tangga nada, akor, dan rutinitas latihan."
+      : "Deeper content: technique, rhythm, notation, scales, chords, and practice routine.";
+
+    const doneText = progress.checklist.theory_read ? t("marked") : t("markDone");
+
+    elContent.innerHTML = `
+      <div class="panel">
+        <div class="callout">
+          <b>${lang==="id" ? "Tujuan bab ini" : "Goal of this module"}</b><br/>
+          ${lang==="id"
+            ? "Biar kamu paham “apa yang harus dipraktikkan” dan “kenapa begitu” saat main piano."
+            : "So you understand what to practice and why when playing piano."}
+        </div>
+
+        <div class="grid2">
+          <div class="panel" style="margin:0;">
+            <b>${lang==="id" ? "A. Postur & Posisi Tangan" : "A. Posture & Hand Position"}</b>
+            <ul class="list" style="margin-top:10px;">
+              <li>${lang==="id" ? "Duduk: punggung tegak, bahu rileks, jarak cukup supaya siku bisa bergerak." : "Sit tall, relaxed shoulders, elbows free to move."}</li>
+              <li>${lang==="id" ? "Pergelangan: netral (jangan jatuh / kaku)." : "Wrist neutral (not collapsed or stiff)."}</li>
+              <li>${lang==="id" ? "Bentuk jari: melengkung, tekan pakai ujung jari." : "Curved fingers, press with fingertips."}</li>
+              <li>${lang==="id" ? "Nomor jari: 1=ibu jari ... 5=kelingking." : "Fingering: 1 thumb ... 5 pinky."}</li>
+            </ul>
+          </div>
+
+          <div class="panel" style="margin:0;">
+            <b>${lang==="id" ? "B. Ritme & Ketukan (Timing)" : "B. Rhythm & Timing"}</b>
+            <ul class="list" style="margin-top:10px;">
+              <li>${lang==="id" ? "Time signature umum: 4/4, 3/4, 6/8." : "Common: 4/4, 3/4, 6/8."}</li>
+              <li>${lang==="id" ? "Latih: tepuk dulu → baru main tuts." : "Clap first → then play."}</li>
+              <li>${lang==="id" ? "Metronome: mulai 60–80 BPM, naik bertahap." : "Start 60–80 BPM, increase gradually."}</li>
+            </ul>
+          </div>
+
+          <div class="panel" style="margin:0;">
+            <b>${lang==="id" ? "C. Membaca Not Balok (Praktis)" : "C. Reading Staff Notation (Practical)"}</b>
+            <ul class="list" style="margin-top:10px;">
+              <li>${lang==="id" ? "Treble umumnya tangan kanan, Bass tangan kiri." : "Treble = right hand, Bass = left hand."}</li>
+              <li>${lang==="id" ? "Latih interval (2nd/3rd/5th), bukan hafal not satu-satu saja." : "Train intervals, not just note naming."}</li>
+              <li>${lang==="id" ? "Gunakan not patokan (Middle C), lalu hitung naik/turun." : "Use reference notes (Middle C), then step up/down."}</li>
+            </ul>
+          </div>
+
+          <div class="panel" style="margin:0;">
+            <b>${lang==="id" ? "D. Tangga Nada & Pola Jari" : "D. Scales & Fingering Patterns"}</b>
+            <ul class="list" style="margin-top:10px;">
+              <li>${lang==="id" ? "Mayor: W W H W W W H." : "Major: W W H W W W H."}</li>
+              <li>${lang==="id" ? "C major RH: 1-2-3 lalu 1-2-3-4-5 (thumb under)." : "C major RH: 1-2-3 then 1-2-3-4-5 (thumb under)."}</li>
+              <li>${lang==="id" ? "Tujuan scale: kontrol suara, akurasi, dan konsistensi jari." : "Scales train control, accuracy, consistency."}</li>
+            </ul>
+          </div>
+
+          <div class="panel" style="margin:0;">
+            <b>${lang==="id" ? "E. Akor & Progression (Untuk Lagu)" : "E. Chords & Progressions (For Songs)"}</b>
+            <ul class="list" style="margin-top:10px;">
+              <li>${lang==="id" ? "Triad mayor: 1-3-5 (C-E-G). Minor: 1-b3-5." : "Major triad 1-3-5; minor 1-b3-5."}</li>
+              <li>${lang==="id" ? "Inversi bikin perpindahan akor lebih halus." : "Inversions make chord transitions smoother."}</li>
+              <li>${lang==="id" ? "Progression populer: I–V–vi–IV (C–G–Am–F)." : "Common: I–V–vi–IV (C–G–Am–F)."}</li>
+            </ul>
+          </div>
+
+          <div class="panel" style="margin:0;">
+            <b>${lang==="id" ? "F. Rutinitas Latihan 15 Menit" : "F. 15-Min Practice Routine"}</b>
+            <ul class="list" style="margin-top:10px;">
+              <li>${lang==="id" ? "3 menit: warm-up (C major pelan, rapi)." : "3 min: warm-up (C major slow & clean)."}</li>
+              <li>${lang==="id" ? "5 menit: ritme + metronome (1 tangan dulu)." : "5 min: rhythm + metronome (one hand)."}</li>
+              <li>${lang==="id" ? "5 menit: akor + inversi (C-G-Am-F)." : "5 min: chords + inversions."}</li>
+              <li>${lang==="id" ? "2 menit: ulang bagian yang paling jelek." : "2 min: fix weakest spots."}</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="row">
+          <button class="smallBtn primary" id="btnMarkTheory">${doneText}</button>
+          <span class="badge">${lang==="id" ? "Checklist Teori" : "Theory checklist"}: <b id="theoryCheck">${progress.checklist.theory_read ? "✅" : "⬜"}</b></span>
+        </div>
+      </div>
+    `;
+
+    document.getElementById("btnMarkTheory").onclick = ()=>{
+      progress.checklist.theory_read = true;
+      saveProgress();
+      document.getElementById("theoryCheck").textContent = "✅";
+      document.getElementById("btnMarkTheory").textContent = t("marked");
+      setStatus(t("statusSaved"));
+    };
+  },
+
+  staff(){
+    markOpened("staff");
+    progress.lastPage = "staff"; saveProgress();
+
+    elPageTitle.textContent = (lang==="id") ? "2. Note Balok Interaktif" : "2. Interactive Staff Notes";
+    elPageDesc.textContent = (lang==="id")
+      ? "Klik not untuk dengar bunyi dan lihat nama not."
+      : "Tap a note to hear the sound and see its name.";
+
+    elContent.innerHTML = `
+      <div class="panel">
+        <div class="row" style="justify-content:space-between;">
+          <div class="badge">${lang==="id" ? "Klik not" : "Taps"}: <b id="staffClicks">${progress.counters.staffClicks}</b>/5</div>
+          <div class="badge">${lang==="id" ? "Terakhir" : "Last"}: <b id="lastStaff">-</b></div>
+        </div>
+
+        <div class="row" style="margin-top:10px;">
+          <button class="smallBtn" id="btnBackToMenu2">${t("staffBackToMenu")}</button>
+          <span class="badge">${t("staffBackHint")}</span>
+        </div>
+
+        <div class="staffWrap">
+          <div class="staff" id="staff">
+            <div class="staffLine" style="top:75px;"></div>
+            <div class="staffLine" style="top:95px;"></div>
+            <div class="staffLine" style="top:115px;"></div>
+            <div class="staffLine" style="top:135px;"></div>
+            <div class="staffLine" style="top:155px;"></div>
+
+            <div class="noteLabel">
+              ${lang==="id"
+                ? "Range sederhana (C4–C5). Klik not → bunyi + nama."
+                : "Simple range (C4–C5). Tap → sound + name."}
+            </div>
+          </div>
+        </div>
+
+        <div class="hr"></div>
+        <div class="muted" style="line-height:1.7" id="staffDoneNote"></div>
+      </div>
+    `;
+
+    document.getElementById("btnBackToMenu2").onclick = ()=> goMenuHome();
+
+    const staffEl = document.getElementById("staff");
+    const lastEl = document.getElementById("lastStaff");
+    const clickEl = document.getElementById("staffClicks");
+    const doneNote = document.getElementById("staffDoneNote");
+
+    const staffNotes = [
+      { name:"C4", x:110, y:185 },
+      { name:"D4", x:165, y:175 },
+      { name:"E4", x:220, y:165 },
+      { name:"F4", x:275, y:155 },
+      { name:"G4", x:330, y:145 },
+      { name:"A4", x:385, y:135 },
+      { name:"B4", x:440, y:125 },
+      { name:"C5", x:495, y:115  },
+    ];
+
+    staffNotes.forEach(n=>{
+      const d = document.createElement("div");
+      d.className = "note";
+      d.style.left = n.x + "px";
+      d.style.top  = n.y + "px";
+      d.title = n.name;
+      d.dataset.note = n.name;
+      staffEl.appendChild(d);
+    });
+
+    function refreshStaffChecklist(){
+      if(progress.counters.staffClicks >= 5){
+        progress.checklist.staff_click5 = true;
+        saveProgress();
+        doneNote.textContent = lang==="id"
+          ? "✅ Checklist: sudah klik minimal 5 kali."
+          : "✅ Checklist: tapped at least 5 times.";
+      } else {
+        doneNote.textContent = lang==="id"
+          ? "⬜ Checklist: klik minimal 5 kali untuk menyelesaikan."
+          : "⬜ Checklist: tap at least 5 times to complete.";
+      }
+    }
+    refreshStaffChecklist();
+
+    staffEl.addEventListener("click", (e)=>{
+      const noteEl = e.target.closest(".note");
+      if(!noteEl) return;
+      const n = noteEl.dataset.note;
+      playNoteName(n);
+
+      progress.counters.staffClicks += 1;
+      saveProgress();
+
+      clickEl.textContent = progress.counters.staffClicks;
+      lastEl.textContent = n;
+      setStatus(t("statusPlayed"));
+      refreshStaffChecklist();
+    });
+  },
+
+  piano(){
+    markOpened("piano");
+    progress.lastPage = "piano"; saveProgress();
+
+    elPageTitle.textContent = (lang==="id") ? "3. Simulasi Piano Virtual" : "3. Virtual Piano Simulator";
+    elPageDesc.textContent = (lang==="id")
+      ? "Klik tuts atau pakai keyboard PC. Target: mainkan 10 nada."
+      : "Tap keys or use your PC keyboard. Goal: play 10 notes.";
+
+    elContent.innerHTML = `
+      <div class="panel">
+        <div class="row" style="justify-content:space-between;">
+          <div class="badge">${lang==="id" ? "Nada dimainkan" : "Notes played"}: <b id="pianoPlays">${progress.counters.pianoPlays}</b>/10</div>
+          <div class="badge">${lang==="id" ? "Terakhir" : "Last"}: <b id="lastPiano">-</b></div>
+          <div class="badge">Keymap: A S D F G H J | W E T Y U</div>
+        </div>
+
+        <div class="pianoWrap">
+          <div class="piano">
+            <div class="keys" id="keys">
+              <div class="whiteKeys" id="whiteKeys"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hr"></div>
+        <div class="row">
+          <button class="smallBtn" id="btnChordC">${lang==="id" ? "Mainkan akor C (C-E-G)" : "Play C chord (C-E-G)"}</button>
+          <button class="smallBtn" id="btnScaleC">${lang==="id" ? "Mainkan scale C (termasuk tuts hitam tidak dipakai)" : "Play C scale (black keys not used)"}</button>
+          <span class="badge" id="pianoDoneBadge">${lang==="id" ? "Checklist" : "Checklist"}: ${progress.checklist.piano_play10 ? "✅" : "⬜"}</span>
+        </div>
+      </div>
+    `;
+
+    const whiteContainer = document.getElementById("whiteKeys");
+    const lastPiano = document.getElementById("lastPiano");
+    const playsEl = document.getElementById("pianoPlays");
+    const doneBadge = document.getElementById("pianoDoneBadge");
+
+    const whites = ["C4","D4","E4","F4","G4","A4","B4","C5"];
+    const blacks = [
+      {note:"C#4", after:"C4"},
+      {note:"D#4", after:"D4"},
+      {note:"F#4", after:"F4"},
+      {note:"G#4", after:"G4"},
+      {note:"A#4", after:"A4"},
+    ];
+
+    whiteContainer.innerHTML = "";
+    whites.forEach(n=>{
+      const k = document.createElement("div");
+      k.className = "whiteKey";
+      k.dataset.note = n;
+      k.innerHTML = `<span>${n.replace("4","").replace("5","")}</span>`;
+      whiteContainer.appendChild(k);
+    });
+
+    const keysEl = document.getElementById("keys");
+    [...keysEl.querySelectorAll(".blackKey")].forEach(x=>x.remove());
+
+    blacks.forEach(b=>{
+      const idx = whites.indexOf(b.after);
+      const bk = document.createElement("div");
+      bk.className = "blackKey";
+      bk.dataset.note = b.note;
+      bk.innerHTML = `<span>${b.note.replace("4","")}</span>`;
+      const leftPct = (idx + 1) * (100/7) - (100/7)*0.30;
+      bk.style.left = `calc(14px + ${leftPct}%)`;
+      keysEl.appendChild(bk);
+    });
+
+    function bumpPiano(note){
+      playNoteName(note);
+      progress.counters.pianoPlays += 1;
+      playsEl.textContent = progress.counters.pianoPlays;
+      lastPiano.textContent = note;
+
+      if(progress.counters.pianoPlays >= 10){
+        progress.checklist.piano_play10 = true;
+        doneBadge.textContent = `${lang==="id" ? "Checklist" : "Checklist"}: ✅`;
+      }
+      saveProgress();
+    }
+    function flashKey(note){
+      const el = document.querySelector(`[data-note="${note}"]`);
+      if(!el) return;
+      el.classList.add("active");
+      setTimeout(()=>el.classList.remove("active"), 140);
+    }
+
+    keysEl.onclick = (e)=>{
+      const key = e.target.closest(".whiteKey, .blackKey");
+      if(!key) return;
+      const note = key.dataset.note;
+      bumpPiano(note); flashKey(note);
+      setStatus(t("statusPlayed"));
+    };
+
+    const keyMap = {
+      "a":"C4", "w":"C#4",
+      "s":"D4", "e":"D#4",
+      "d":"E4",
+      "f":"F4", "t":"F#4",
+      "g":"G4", "y":"G#4",
+      "h":"A4", "u":"A#4",
+      "j":"B4",
+    };
+    window.onkeydown = (ev)=>{
+      const k = ev.key.toLowerCase();
+      if(!keyMap[k]) return;
+      bumpPiano(keyMap[k]);
+      flashKey(keyMap[k]);
+      setStatus(t("statusPlayed"));
+    };
+
+    document.getElementById("btnChordC").onclick = ()=>{
+      ["C4","E4","G4"].forEach((n,i)=> setTimeout(()=>{ bumpPiano(n); flashKey(n); }, i*140));
+    };
+    document.getElementById("btnScaleC").onclick = ()=>{
+      ["C4","D4","E4","F4","G4","A4","B4","C5"].forEach((n,i)=> setTimeout(()=>{ bumpPiano(n); flashKey(n); }, i*140));
+    };
+  },
+
+  metro(){
+    markOpened("metro");
+    progress.lastPage = "metro"; saveProgress();
+
+    elPageTitle.textContent = "4. Metronome";
+    elPageDesc.textContent = (lang==="id") ? "Latih tempo dan ketukan." : "Practice tempo and timing.";
+
+    elContent.innerHTML = `
+      <div class="panel">
+        <div class="row">
+          <span class="badge">BPM</span>
+          <input type="number" id="bpm" min="30" max="240" value="80" />
+          <button class="smallBtn primary" id="btnMetro">Start</button>
+          <span class="badge">${lang==="id" ? "Ketukan" : "Ticks"}: <b id="tickCount">0</b></span>
+          <span class="badge" id="metroBadge">${lang==="id" ? "Checklist" : "Checklist"}: ${progress.checklist.metro_use ? "✅" : "⬜"}</span>
+        </div>
+
+        <div style="margin-top:12px;">
+          <input class="slider" id="bpmSlider" type="range" min="30" max="240" value="80" />
+        </div>
+
+        <div class="hr"></div>
+        <div class="muted" style="line-height:1.7">
+          ${lang==="id"
+            ? "Pemula: coba 60–80 BPM. Naikkan pelan-pelan kalau sudah stabil."
+            : "Beginners: try 60–80 BPM. Increase slowly once stable."}
+        </div>
+      </div>
+    `;
+
+    const bpmInput = document.getElementById("bpm");
+    const bpmSlider = document.getElementById("bpmSlider");
+    const btn = document.getElementById("btnMetro");
+    const tickEl = document.getElementById("tickCount");
+    const badge = document.getElementById("metroBadge");
+
+    let timer = null;
+    METRO.ticks = 0;
+
+    function sync(val){
+      bpmInput.value = val;
+      bpmSlider.value = val;
+      if(timer){ stop(); start(); }
+    }
+    bpmInput.oninput = ()=> sync(bpmInput.value);
+    bpmSlider.oninput = ()=> sync(bpmSlider.value);
+
+function tick(){
+  playTone(1200, 0.06);
+  METRO.ticks++;
+  tickEl.textContent = METRO.ticks;
+}
+
+function start(){
+  const bpm = Math.max(30, Math.min(240, Number(bpmInput.value)||80));
+  const interval = 60000 / bpm;
+
+  tick();
+  METRO.timer = setInterval(tick, interval);
+
+  progress.checklist.metro_use = true;
+  saveProgress();
+  badge.textContent = `${lang==="id" ? "Checklist" : "Checklist"}: ✅`;
+  setStatus(t("statusRunning"));
+  btn.textContent = "Stop";
+}
+
+function stop(){
+  METRO.stop();
+  setStatus(t("statusStopped"));
+  btn.textContent = "Start";
+}
+
+btn.onclick = ()=> METRO.timer ? stop() : start();
+    },
+
+  quiz(){
+    markOpened("quiz");
+    progress.lastPage = "quiz"; saveProgress();
+
+    elPageTitle.textContent = (lang==="id") ? "5. Latihan & Kuis" : "5. Exercises & Quiz";
+    elPageDesc.textContent = (lang==="id")
+      ? "Dengarkan nada, lalu pilih jawabannya."
+      : "Listen to the note, then choose the answer.";
+
+    elContent.innerHTML = `
+      <div class="panel">
+        <div class="kpi">
+          <div class="mini">
+            <div class="big" id="score">0</div>
+            <div class="small">${lang==="id" ? "Skor sesi ini" : "Session score"}</div>
+          </div>
+          <div class="mini">
+            <div class="big" id="best">${progress.counters.quizBest}</div>
+            <div class="small">${lang==="id" ? "Skor terbaik" : "Best score"}</div>
+          </div>
+          <div class="mini">
+            <div class="big" id="streak">0</div>
+            <div class="small">${lang==="id" ? "Streak benar" : "Correct streak"}</div>
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="row">
+          <button class="smallBtn primary" id="btnPlayQ">${lang==="id" ? "Putar Soal" : "Play Question"}</button>
+          <button class="smallBtn" id="btnNextQ">${lang==="id" ? "Soal Baru" : "New Question"}</button>
+          <span class="badge" id="quizBadge">${lang==="id" ? "Checklist" : "Checklist"}: ${progress.checklist.quiz_score3 ? "✅" : "⬜"}</span>
+        </div>
+
+        <div class="panel" style="margin-top:12px;">
+          <div class="qa" id="choices"></div>
+          <div class="muted" style="margin-top:10px;" id="quizMsg">
+            ${lang==="id" ? "Klik Putar Soal, lalu pilih jawaban." : "Tap Play, then pick an answer."}
+          </div>
+        </div>
+      </div>
+    `;
+
+    const btnPlay = document.getElementById("btnPlayQ");
+    const btnNext = document.getElementById("btnNextQ");
+    const choicesEl = document.getElementById("choices");
+    const msgEl = document.getElementById("quizMsg");
+    const scoreEl = document.getElementById("score");
+    const bestEl = document.getElementById("best");
+    const streakEl = document.getElementById("streak");
+    const badge = document.getElementById("quizBadge");
+
+    const pool = ["C4","D4","E4","F4","G4","A4","B4","C5","C#4","D#4","F#4","G#4","A#4"];
+    let answer = pool[Math.floor(Math.random()*pool.length)];
+    let score = 0;
+    let streak = 0;
+    let locked = false;
+
+    function shuffle(arr){
+      const a = arr.slice();
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]] = [a[j],a[i]];
+      }
+      return a;
+    }
+    function newQuestion(){
+      answer = pool[Math.floor(Math.random()*pool.length)];
+      locked = false;
+      msgEl.textContent = lang==="id" ? "Klik Putar Soal, lalu pilih jawaban." : "Tap Play, then pick an answer.";
+      renderChoices();
+    }
+    function playQ(){ playNoteName(answer); setStatus(t("statusPlayed")); }
+
+    function renderChoices(){
+      const options = shuffle([answer, ...shuffle(pool.filter(n=>n!==answer)).slice(0,3)]);
+      choicesEl.innerHTML = "";
+      options.forEach(opt=>{
+        const b = document.createElement("div");
+        b.className = "choice";
+        b.textContent = opt;
+        b.onclick = ()=>{
+          if(locked) return;
+          locked = true;
+
+          if(opt === answer){
+            b.classList.add("good");
+            score += 1;
+            streak += 1;
+            msgEl.textContent = lang==="id" ? "✅ Benar! Klik Soal Baru untuk lanjut." : "✅ Correct! Tap New Question to continue.";
+            setStatus(lang==="id" ? "Benar" : "Correct");
+          }else{
+            b.classList.add("bad");
+            score = Math.max(0, score-1);
+            streak = 0;
+            msgEl.textContent = (lang==="id" ? "❌ Salah. Jawaban benar: " : "❌ Wrong. Correct answer: ") + answer;
+            setStatus(lang==="id" ? "Salah" : "Wrong");
+            [...choicesEl.children].forEach(ch=>{
+              if(ch.textContent === answer) ch.classList.add("good");
+            });
+          }
+
+          scoreEl.textContent = score;
+          streakEl.textContent = streak;
+
+          if(score > progress.counters.quizBest){
+            progress.counters.quizBest = score;
+            bestEl.textContent = progress.counters.quizBest;
+            saveProgress();
+          }
+          if(score >= 3){
+            progress.checklist.quiz_score3 = true;
+            badge.textContent = `${lang==="id" ? "Checklist" : "Checklist"}: ✅`;
+            saveProgress();
+          }
+        };
+        choicesEl.appendChild(b);
+      });
+    }
+
+    btnPlay.onclick = playQ;
+    btnNext.onclick = newQuestion;
+    newQuestion();
+  },
+
+  progress(){
+    markOpened("progress");
+    progress.lastPage = "progress"; saveProgress();
+
+    elPageTitle.textContent = (lang==="id") ? "6. Progress Belajar" : "6. Learning Progress";
+    elPageDesc.textContent = (lang==="id") ? "Ringkasan dan checklist belajar." : "Summary and learning checklist.";
+
+    elContent.innerHTML = `
+      <div class="panel">
+        <div class="row" style="justify-content:space-between;">
+          <div class="badge">${lang==="id" ? "Checklist selesai" : "Completed"}: <b>${pctComplete()}%</b></div>
+          <div class="badge">${lang==="id" ? "Halaman terakhir" : "Last page"}: <b>${progress.lastPage}</b></div>
+        </div>
+
+        <div style="margin-top:10px;" class="progressBar">
+          <div id="bar"></div>
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="grid2">
+          <div class="panel" style="margin:0;">
+            <b>${lang==="id" ? "Checklist" : "Checklist"}</b>
+            <ul class="list" style="margin-top:10px;">
+              <li>${lang==="id" ? "Teori ditandai selesai" : "Theory marked done"}: <b>${progress.checklist.theory_read ? "✅" : "⬜"}</b></li>
+              <li>${lang==="id" ? "Klik not balok 5x" : "Tap staff notes 5x"}: <b>${progress.checklist.staff_click5 ? "✅" : "⬜"}</b></li>
+              <li>${lang==="id" ? "Mainkan 10 nada" : "Play 10 notes"}: <b>${progress.checklist.piano_play10 ? "✅" : "⬜"}</b></li>
+              <li>${lang==="id" ? "Pakai metronome" : "Use metronome"}: <b>${progress.checklist.metro_use ? "✅" : "⬜"}</b></li>
+              <li>${lang==="id" ? "Skor kuis ≥ 3" : "Quiz score ≥ 3"}: <b>${progress.checklist.quiz_score3 ? "✅" : "⬜"}</b></li>
+            </ul>
+          </div>
+
+          <div class="panel" style="margin:0;">
+            <b>${lang==="id" ? "Aktivitas" : "Activity"}</b>
+            <ul class="list" style="margin-top:10px;">
+              <li>${lang==="id" ? "Klik not balok" : "Staff taps"}: <b>${progress.counters.staffClicks}</b></li>
+              <li>${lang==="id" ? "Nada dimainkan" : "Notes played"}: <b>${progress.counters.pianoPlays}</b></li>
+              <li>${lang==="id" ? "Skor terbaik" : "Best score"}: <b>${progress.counters.quizBest}</b></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.getElementById("bar").style.width = pctComplete() + "%";
+  },
+};
+
+/* =========================
+   APPLY LANGUAGE TO UI
+========================= */
+function applyLanguageUI(){
+  appNameSide.textContent = APP.name;
+  appTagSide.textContent = t("tag");
+
+  btnStart.textContent = t("start");
+  btnBackHome.textContent = t("backHome");
+  btnReset.textContent = t("reset");
+
+  m_about.textContent = t("menu_about");
+  m_theory.textContent = t("menu_theory");
+  m_staff.textContent = t("menu_staff");
+  m_piano.textContent = t("menu_piano");
+  m_metro.textContent = t("menu_metro");
+  m_quiz.textContent = t("menu_quiz");
+  m_progress.textContent = t("menu_progress");
+
+  langLabel.textContent = t("langLabel");
+  btnLangID.classList.toggle("active", lang==="id");
+  btnLangEN.classList.toggle("active", lang==="en");
+}
+
+/* =========================
+   EVENTS
+========================= */
+btnStart.onclick = ()=>{
+  preloadSamples(); // ✅ preload semua sample termasuk sharp
+  showMenu();
+  pages.menuHome();
+};
+
+btnBackHome.onclick = ()=>{
+    METRO.stop();
+  showHomeActions();
+  pages.home();
+};
+
+btnReset.onclick = ()=>{
+  const ok = confirm(lang==="id"
+    ? "Reset semua progress? Ini menghapus data tersimpan."
+    : "Reset all progress? This will clear saved data.");
+  if(!ok) return;
+  localStorage.removeItem(STORAGE_KEY);
+  progress = loadProgress();
+  setStatus(t("statusSaved"));
+  showHomeActions();
+  pages.home();
+};
+
+elMenu.addEventListener("click", (e)=>{
+  const btn = e.target.closest("button[data-page]");
+  if(!btn) return;
+  go(btn.dataset.page);
+});
+
+btnLangID.onclick = ()=>{
+  lang = "id";
+  localStorage.setItem(I18N_KEY, lang);
+  applyLanguageUI();
+  rerenderCurrent();
+};
+btnLangEN.onclick = ()=>{
+  lang = "en";
+  localStorage.setItem(I18N_KEY, lang);
+  applyLanguageUI();
+  rerenderCurrent();
+};
+
+function rerenderCurrent(){
+  if(elMenu.style.display === "flex"){
+    go(progress.lastPage || "about");
+  }else{
+    pages.home();
+  }
+}
+
+/* =========================
+   UTILS
+========================= */
+function sanitizeWA(wa){
+  const digits = String(wa||"").replace(/\D/g,"");
+  return digits.startsWith("0") ? digits.slice(1) : digits;
+}
+function formatWA(wa){
+  return String(wa||"").replace(/\D/g,"");
+}
+
+/* =========================
+   INIT
+========================= */
+applyLanguageUI();
+pages.home();
+setStatus(t("statusReady"));
+</script>
+</body>
+</html>
