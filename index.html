@@ -826,100 +826,193 @@ const pages = {
   },
 
   theory(){
-    markOpened("theory");
-    progress.lastPage = "theory"; saveProgress();
+  markOpened("theory");
+  progress.lastPage = "theory"; saveProgress();
 
-    elPageTitle.textContent = (lang==="id") ? "1. Teori Musik Dasar (Piano)" : "1. Basic Music Theory (Piano)";
-    elPageDesc.textContent = (lang==="id")
-      ? "Materi lebih dalam: teknik dasar, ritme, notasi, tangga nada, akor, dan rutinitas latihan."
-      : "Deeper content: technique, rhythm, notation, scales, chords, and practice routine.";
+  elPageTitle.textContent = (lang==="id") ? "1. Teori Musik Dasar (Piano)" : "1. Basic Music Theory (Piano)";
+  elPageDesc.textContent = (lang==="id")
+    ? "Materi pemula yang jelas: postur, ritme, notasi, tangga nada, akor, dan rutinitas latihan."
+    : "Clear beginner content: posture, rhythm, notation, scales, chords, and practice routine.";
 
-    const doneText = progress.checklist.theory_read ? t("marked") : t("markDone");
+  const doneText = progress.checklist.theory_read ? t("marked") : t("markDone");
 
-    elContent.innerHTML = `
-      <div class="panel">
-        <div class="callout">
-          <b>${lang==="id" ? "Tujuan bab ini" : "Goal of this module"}</b><br/>
-          ${lang==="id"
-            ? "Biar kamu paham “apa yang harus dipraktikkan” dan “kenapa begitu” saat main piano."
-            : "So you understand what to practice and why when playing piano."}
+  const ID = {
+    intro: `Bagian ini dibuat khusus untuk pemula piano. Fokusnya bukan istilah rumit, tapi hal yang langsung kepakai saat latihan.`,
+    A: {
+      t: "A. Postur & Posisi Tangan",
+      items: [
+        "Duduk tegak, bahu rileks. Jarak duduk cukup supaya siku bisa bergerak bebas.",
+        "Pergelangan netral (tidak jatuh ke bawah, tidak kaku naik ke atas).",
+        "Jari melengkung seperti memegang bola kecil, tekan tuts pakai ujung jari.",
+        "Nomor jari: 1=ibu jari, 2=telunjuk, 3=tengah, 4=manis, 5=kelingking."
+      ]
+    },
+    B: {
+      t: "B. Ritme & Ketukan",
+      items: [
+        "BPM = kecepatan ketukan. Mulai latihan di 60–80 BPM.",
+        "Latih ritme dengan tepuk tangan dulu, baru pindah ke tuts.",
+        "Kalau sering ‘ngebut’ atau ‘ngaret’, pakai metronome biar stabil."
+      ]
+    },
+    C: {
+      t: "C. Membaca Not Balok",
+      items: [
+        "Umumnya: Treble = tangan kanan, Bass = tangan kiri.",
+        "Jangan hafalin not satu-satu saja. Latih membaca ‘jarak’ (naik 1 langkah / turun 1 langkah).",
+        "Gunakan patokan: Middle C (C tengah), lalu hitung langkah naik/turun."
+      ]
+    },
+    D: {
+      t: "D. Tangga Nada & Pola Jari",
+      items: [
+        "Tangga nada mayor adalah urutan nada yang jaraknya punya pola tetap.",
+        "Contoh C Mayor: C – D – E – F – G – A – B – C (tidak ada tuts hitam).",
+        "Jarak di piano: setengah nada = 1 tuts, satu nada = 2 tuts.",
+        "Kenapa ada pola jari? Supaya tangan bisa lanjut tanpa putus dan gerak lebih efisien.",
+        "Pola jari C Mayor tangan kanan: C(1)–D(2)–E(3), lalu ibu jari masuk ke bawah → F(1)–G(2)–A(3)–B(4)–C(5).",
+        "Tujuan latihan scale: kontrol suara, akurasi, dan konsistensi jari."
+      ]
+    },
+    E: {
+      t: "E. Akor & Progression",
+      items: [
+        "Akor dasar (triad) biasanya 3 nada: contoh C mayor = C–E–G.",
+        "Inversi akor membuat perpindahan lebih halus (nada tidak loncat jauh).",
+        "Progression populer: C–G–Am–F (sering dipakai banyak lagu)."
+      ]
+    },
+    F: {
+      t: "F. Rutinitas Latihan 15 Menit",
+      items: [
+        "3 menit: warm-up (main C major pelan, rapih).",
+        "5 menit: ritme + metronome (1 tangan dulu).",
+        "5 menit: akor (C–G–Am–F) + coba inversi sederhana.",
+        "2 menit: ulang bagian yang paling sering salah."
+      ]
+    }
+  };
+
+  const EN = {
+    intro: `This module is written for piano beginners. It focuses on practical skills you can apply immediately.`,
+    A: {
+      t: "A. Posture & Hand Position",
+      items: [
+        "Sit tall, relax shoulders. Keep enough distance so elbows can move freely.",
+        "Keep wrists neutral (not collapsed down, not stiff up).",
+        "Curve fingers like holding a small ball, press with fingertips.",
+        "Fingering numbers: 1=thumb, 2=index, 3=middle, 4=ring, 5=pinky."
+      ]
+    },
+    B: {
+      t: "B. Rhythm & Timing",
+      items: [
+        "BPM = speed of beats. Start around 60–80 BPM.",
+        "Clap the rhythm first, then move to the keys.",
+        "Use a metronome to avoid rushing or dragging."
+      ]
+    },
+    C: {
+      t: "C. Reading Staff Notation (Practical)",
+      items: [
+        "Commonly: Treble = right hand, Bass = left hand.",
+        "Don’t only memorize note names—train ‘steps’ (up/down by one).",
+        "Use a reference note (Middle C) and count steps from there."
+      ]
+    },
+    D: {
+      t: "D. Scales & Fingering (Beginner-Friendly)",
+      items: [
+        "A major scale is a sequence of notes built with a consistent spacing pattern.",
+        "Example C Major: C – D – E – F – G – A – B – C (no black keys).",
+        "On piano: half-step = 1 key, whole-step = 2 keys.",
+        "Why fingering matters: smooth movement and efficient hand position.",
+        "C Major right hand fingering: C(1)–D(2)–E(3), thumb under → F(1)–G(2)–A(3)–B(4)–C(5).",
+        "Scale goals: tone control, accuracy, and consistency."
+      ]
+    },
+    E: {
+      t: "E. Chords & Progressions (For Songs)",
+      items: [
+        "Basic triads use 3 notes: e.g., C major = C–E–G.",
+        "Chord inversions make transitions smoother (less jumping).",
+        "Common progression: C–G–Am–F (used in many songs)."
+      ]
+    },
+    F: {
+      t: "F. 15-Min Practice Routine (Realistic)",
+      items: [
+        "3 min: warm-up (C major slow and clean).",
+        "5 min: rhythm + metronome (one hand first).",
+        "5 min: chords (C–G–Am–F) + simple inversions.",
+        "2 min: fix your weakest section."
+      ]
+    }
+  };
+
+  const P = (lang === "id") ? ID : EN;
+
+  function renderList(items){
+    return `<ul class="list" style="margin-top:10px;">${items.map(x=>`<li>${x}</li>`).join("")}</ul>`;
+  }
+
+  elContent.innerHTML = `
+    <div class="panel">
+      <div class="callout">
+        <b>${lang==="id" ? "Tujuan bab ini" : "Goal of this module"}</b><br/>
+        ${P.intro}
+      </div>
+
+      <div class="grid2">
+        <div class="panel" style="margin:0;">
+          <b>${P.A.t}</b>
+          ${renderList(P.A.items)}
         </div>
 
-        <div class="grid2">
-          <div class="panel" style="margin:0;">
-            <b>${lang==="id" ? "A. Postur & Posisi Tangan" : "A. Posture & Hand Position"}</b>
-            <ul class="list" style="margin-top:10px;">
-              <li>${lang==="id" ? "Duduk: punggung tegak, bahu rileks, jarak cukup supaya siku bisa bergerak." : "Sit tall, relaxed shoulders, elbows free to move."}</li>
-              <li>${lang==="id" ? "Pergelangan: netral (jangan jatuh / kaku)." : "Wrist neutral (not collapsed or stiff)."}</li>
-              <li>${lang==="id" ? "Bentuk jari: melengkung, tekan pakai ujung jari." : "Curved fingers, press with fingertips."}</li>
-              <li>${lang==="id" ? "Nomor jari: 1=ibu jari ... 5=kelingking." : "Fingering: 1 thumb ... 5 pinky."}</li>
-            </ul>
-          </div>
-
-          <div class="panel" style="margin:0;">
-            <b>${lang==="id" ? "B. Ritme & Ketukan (Timing)" : "B. Rhythm & Timing"}</b>
-            <ul class="list" style="margin-top:10px;">
-              <li>${lang==="id" ? "Time signature umum: 4/4, 3/4, 6/8." : "Common: 4/4, 3/4, 6/8."}</li>
-              <li>${lang==="id" ? "Latih: tepuk dulu → baru main tuts." : "Clap first → then play."}</li>
-              <li>${lang==="id" ? "Metronome: mulai 60–80 BPM, naik bertahap." : "Start 60–80 BPM, increase gradually."}</li>
-            </ul>
-          </div>
-
-          <div class="panel" style="margin:0;">
-            <b>${lang==="id" ? "C. Membaca Not Balok (Praktis)" : "C. Reading Staff Notation (Practical)"}</b>
-            <ul class="list" style="margin-top:10px;">
-              <li>${lang==="id" ? "Treble umumnya tangan kanan, Bass tangan kiri." : "Treble = right hand, Bass = left hand."}</li>
-              <li>${lang==="id" ? "Latih interval (2nd/3rd/5th), bukan hafal not satu-satu saja." : "Train intervals, not just note naming."}</li>
-              <li>${lang==="id" ? "Gunakan not patokan (Middle C), lalu hitung naik/turun." : "Use reference notes (Middle C), then step up/down."}</li>
-            </ul>
-          </div>
-
-          <div class="panel" style="margin:0;">
-            <b>${lang==="id" ? "D. Tangga Nada & Pola Jari" : "D. Scales & Fingering Patterns"}</b>
-            <ul class="list" style="margin-top:10px;">
-              <li>${lang==="id" ? "Mayor: W W H W W W H." : "Major: W W H W W W H."}</li>
-              <li>${lang==="id" ? "C major RH: 1-2-3 lalu 1-2-3-4-5 (thumb under)." : "C major RH: 1-2-3 then 1-2-3-4-5 (thumb under)."}</li>
-              <li>${lang==="id" ? "Tujuan scale: kontrol suara, akurasi, dan konsistensi jari." : "Scales train control, accuracy, consistency."}</li>
-            </ul>
-          </div>
-
-          <div class="panel" style="margin:0;">
-            <b>${lang==="id" ? "E. Akor & Progression (Untuk Lagu)" : "E. Chords & Progressions (For Songs)"}</b>
-            <ul class="list" style="margin-top:10px;">
-              <li>${lang==="id" ? "Triad mayor: 1-3-5 (C-E-G). Minor: 1-b3-5." : "Major triad 1-3-5; minor 1-b3-5."}</li>
-              <li>${lang==="id" ? "Inversi bikin perpindahan akor lebih halus." : "Inversions make chord transitions smoother."}</li>
-              <li>${lang==="id" ? "Progression populer: I–V–vi–IV (C–G–Am–F)." : "Common: I–V–vi–IV (C–G–Am–F)."}</li>
-            </ul>
-          </div>
-
-          <div class="panel" style="margin:0;">
-            <b>${lang==="id" ? "F. Rutinitas Latihan 15 Menit" : "F. 15-Min Practice Routine"}</b>
-            <ul class="list" style="margin-top:10px;">
-              <li>${lang==="id" ? "3 menit: warm-up (C major pelan, rapi)." : "3 min: warm-up (C major slow & clean)."}</li>
-              <li>${lang==="id" ? "5 menit: ritme + metronome (1 tangan dulu)." : "5 min: rhythm + metronome (one hand)."}</li>
-              <li>${lang==="id" ? "5 menit: akor + inversi (C-G-Am-F)." : "5 min: chords + inversions."}</li>
-              <li>${lang==="id" ? "2 menit: ulang bagian yang paling jelek." : "2 min: fix weakest spots."}</li>
-            </ul>
-          </div>
+        <div class="panel" style="margin:0;">
+          <b>${P.B.t}</b>
+          ${renderList(P.B.items)}
         </div>
 
-        <div class="hr"></div>
+        <div class="panel" style="margin:0;">
+          <b>${P.C.t}</b>
+          ${renderList(P.C.items)}
+        </div>
 
-        <div class="row">
-          <button class="smallBtn primary" id="btnMarkTheory">${doneText}</button>
-          <span class="badge">${lang==="id" ? "Checklist Teori" : "Theory checklist"}: <b id="theoryCheck">${progress.checklist.theory_read ? "✅" : "⬜"}</b></span>
+        <div class="panel" style="margin:0;">
+          <b>${P.D.t}</b>
+          ${renderList(P.D.items)}
+        </div>
+
+        <div class="panel" style="margin:0;">
+          <b>${P.E.t}</b>
+          ${renderList(P.E.items)}
+        </div>
+
+        <div class="panel" style="margin:0;">
+          <b>${P.F.t}</b>
+          ${renderList(P.F.items)}
         </div>
       </div>
-    `;
 
-    document.getElementById("btnMarkTheory").onclick = ()=>{
-      progress.checklist.theory_read = true;
-      saveProgress();
-      document.getElementById("theoryCheck").textContent = "✅";
-      document.getElementById("btnMarkTheory").textContent = t("marked");
-      setStatus(t("statusSaved"));
-    };
-  },
+      <div class="hr"></div>
+      <div class="row">
+        <button class="smallBtn primary" id="btnMarkTheory">${doneText}</button>
+        <span class="badge">${lang==="id" ? "Checklist Teori" : "Theory checklist"}:
+          <b id="theoryCheck">${progress.checklist.theory_read ? "✅" : "⬜"}</b>
+        </span>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("btnMarkTheory").onclick = ()=>{
+    progress.checklist.theory_read = true;
+    saveProgress();
+    document.getElementById("theoryCheck").textContent = "✅";
+    document.getElementById("btnMarkTheory").textContent = t("marked");
+    setStatus(t("statusSaved"));
+  };
+},
 
   staff(){
     markOpened("staff");
